@@ -1,15 +1,23 @@
 {
-  "name": "vue-json-editor",
+  "name": "@xrr2016/vue-json-editor",
   "version": "0.1.0",
-  "private": true,
+  "description": "vuejs json editor",
+  "repository": "xrr2016/vue-json-editor",
+  "main": "dist/vue-json-editor.umd.min.js",
+  "license": "MIT",
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build:app": "vue-cli-service build --dest docs",
+    "build:comp": "vue-cli-service build --target lib --name vue-json-editor ./src/components/vue-json-editor.vue --dest dist",
+    "build": "yarn build:app && yarn build:comp",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
+  "prepublishOnly": "yarn build",
   "dependencies": {
     "core-js": "^2.6.5",
+    "element-ui": "^2.12.0",
     "vue": "^2.6.10"
   },
   "devDependencies": {
