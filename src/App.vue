@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>Vue Json Editor</h1>
-    <vue-json-editor></vue-json-editor>
+    <vue-json-editor @change="getJson"></vue-json-editor>
   </div>
 </template>
 
@@ -12,6 +12,11 @@ export default {
   name: "app",
   components: {
     VueJsonEditor
+  },
+  methods: {
+    getJson(json) {
+      console.log("json :", json);
+    }
   }
 };
 </script>

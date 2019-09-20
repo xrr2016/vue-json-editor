@@ -2,16 +2,16 @@
   <section class="vue-json-editor">
     <div class="select">
       <el-tree
+        node-key="key"
         :data="tree"
         :indent="10"
-        node-key="$treeNodeId"
         :expand-on-click-node="false"
         :render-content="renderContent"
         default-expand-all
       />
     </div>
     <div class="json">
-      <pre class="pre" v-text="dataText"></pre>
+      <pre class="pre" v-text="jsonText"></pre>
     </div>
   </section>
 </template>
@@ -37,13 +37,12 @@ export default {
     };
   },
   computed: {
-    dataText() {
+    jsonText() {
       const root = this.tree[0];
       const type = root.type;
-
       const json = travelNode(root).root;
-      this.$emit("change", json);
 
+      this.$emit("change", JSON.stringify(json));
       return json;
     }
   },
@@ -82,7 +81,7 @@ export default {
     remove(node, data) {
       const parent = node.parent;
       const children = parent.data.children || parent.data;
-      const index = children.findIndex(d => d.id === data.id);
+      const index = children.findIndex(d => d.key === data.key);
 
       children.splice(index, 1);
     },
