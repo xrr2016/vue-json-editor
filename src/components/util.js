@@ -34,3 +34,9 @@ export function travelNode(node) {
 
   return { [currentNode.key]: currentNode.value }
 }
+
+export function randomId() {
+  return Math.random()
+    .toString(16)
+    .slice(-6)
+}

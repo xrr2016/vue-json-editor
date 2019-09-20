@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { travelNode } from "./util";
+import { travelNode, randomId } from "./util";
 import VALUE_TYPES from "./value-types";
 
 export default {
@@ -41,7 +41,7 @@ export default {
       const root = this.tree[0];
       const type = root.type;
 
-      const json = travelNode(root);
+      const json = travelNode(root).root;
       this.$emit("change", json);
 
       return json;
@@ -67,7 +67,7 @@ export default {
     },
     append(data) {
       const newChild = {
-        key: data.type === "array" ? data.children.length : Date.now(),
+        key: data.type === "array" ? data.children.length : randomId(),
         value: "value",
         type: "string",
         children: []
@@ -94,7 +94,7 @@ export default {
             <el-input
               placeholder="key"
               v-model={data.key}
-              disabled={parentType === "array"}
+              disabled={parentType === "array" || data.isRoot}
             ></el-input>
           </el-col>
           <el-col span={5}>
