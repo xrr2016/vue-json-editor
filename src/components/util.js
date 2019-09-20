@@ -6,10 +6,14 @@ function getKeyValue(node) {
   return { [node.key]: node.value }
 }
 
+// TODO 数据缓存
+
+let i = 0
 export function travelNode(node) {
+  i += 1
   const currentNode = node
 
-  if (currentNode.children.length) {
+  if (currentNode.children.length > 0) {
     if (currentNode.type === 'object') {
       const object = { ...currentNode.children.map(getKeyValue) }
 
@@ -32,6 +36,7 @@ export function travelNode(node) {
     currentNode.children.forEach(travelNode)
   }
 
+  console.log('i :', i)
   return { [currentNode.key]: currentNode.value }
 }
 

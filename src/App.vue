@@ -14,9 +14,7 @@ export default {
     VueJsonEditor
   },
   methods: {
-    getJson(json) {
-      console.log("json :", json);
-    }
+    getJson(json) {}
   }
 };
 </script>

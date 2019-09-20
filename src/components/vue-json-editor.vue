@@ -18,10 +18,23 @@
 
 <script>
 import { travelNode, randomId } from "./util";
-import { ROOT_TYPES, VALUE_TYPES } from "./value-types";
+import { ROOT_TYPES, VALUE_TYPES } from "./type";
 
 export default {
   name: "VueJsonEditor",
+  props: {
+    // data: {
+    //   type: Object,
+    //   required: false,
+    //   default: () => ({
+    //     key: "root",
+    //     value: [],
+    //     type: "array",
+    //     isRoot: true,
+    //     children: []
+    //   })
+    // }
+  },
   data() {
     return {
       tree: [
@@ -38,7 +51,6 @@ export default {
   computed: {
     jsonText() {
       const root = this.tree[0];
-      const type = root.type;
       const json = travelNode(root).root;
 
       this.$emit("change", JSON.stringify(json));
