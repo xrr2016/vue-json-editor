@@ -18,18 +18,17 @@
 
 <script>
 import { travelNode, randomId } from "./util";
-import VALUE_TYPES from "./value-types";
+import { ROOT_TYPES, VALUE_TYPES } from "./value-types";
 
 export default {
   name: "VueJsonEditor",
   data() {
     return {
-      VALUE_TYPES,
       tree: [
         {
           key: "root",
-          value: "root",
-          type: "string",
+          value: [],
+          type: "array",
           isRoot: true,
           children: []
         }
@@ -86,29 +85,46 @@ export default {
       children.splice(index, 1);
     },
     renderContent(h, { node, data, store }) {
+      const isRoot = data.isRoot;
       const parentType = node.parent.data.type;
+
       return (
         <el-row class="flex" gutter={8}>
           <el-col span={5}>
             <el-input
               placeholder="key"
               v-model={data.key}
-              disabled={parentType === "array" || data.isRoot}
+              disabled={parentType === "array" || isRoot}
             ></el-input>
           </el-col>
           <el-col span={5}>
-            <el-select
-              v-model={data.type}
-              on-change={() => this.onChangeType(data)}
-            >
-              {VALUE_TYPES.map(type => (
-                <el-option
-                  key={type.value}
-                  label={type.label}
-                  value={type.value}
-                ></el-option>
-              ))}
-            </el-select>
+            {isRoot ? (
+              <el-select
+                v-model={data.type}
+                on-change={() => this.onChangeType(data)}
+              >
+                {ROOT_TYPES.map(type => (
+                  <el-option
+                    key={type.value}
+                    label={type.label}
+                    value={type.value}
+                  ></el-option>
+                ))}
+              </el-select>
+            ) : (
+              <el-select
+                v-model={data.type}
+                on-change={() => this.onChangeType(data)}
+              >
+                {VALUE_TYPES.map(type => (
+                  <el-option
+                    key={type.value}
+                    label={type.label}
+                    value={type.value}
+                  ></el-option>
+                ))}
+              </el-select>
+            )}
           </el-col>
           <el-col span={11}>
             {data.type === "string" && (
@@ -141,7 +157,7 @@ export default {
               <i class="el-icon-plus" on-click={() => this.append(data)} />
             )}
 
-            {!data.isRoot && (
+            {!isRoot && (
               <i
                 class="el-icon-delete"
                 on-click={() => this.remove(node, data)}
