@@ -1,6 +1,6 @@
 {
   "name": "@xrr2016/vue-json-editor",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "vuejs json editor",
   "repository": "xrr2016/vue-json-editor",
   "main": "dist/vue-json-editor.umd.min.js",
