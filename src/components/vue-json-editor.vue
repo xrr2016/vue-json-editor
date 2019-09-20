@@ -4,10 +4,10 @@
       <el-tree
         :data="tree"
         :indent="10"
-        node-key="key"
-        default-expand-all
+        node-key="$treeNodeId"
         :expand-on-click-node="false"
         :render-content="renderContent"
+        default-expand-all
       />
     </div>
     <div class="json">
@@ -17,18 +17,11 @@
 </template>
 
 <script>
-import { mapItemsToObject } from "./util";
+import { travelNode } from "./util";
 import VALUE_TYPES from "./value-types";
 
 export default {
   name: "VueJsonEditor",
-  props: {
-    json: {
-      type: String,
-      required: false,
-      default: ""
-    }
-  },
   data() {
     return {
       VALUE_TYPES,
@@ -48,17 +41,10 @@ export default {
       const root = this.tree[0];
       const type = root.type;
 
-      if (type === "array") {
-        return mapItemsToObject(root);
-      }
+      const json = travelNode(root);
+      this.$emit("change", json);
 
-      if (type === "object") {
-        return mapItemsToObject(root);
-      }
-
-      return {
-        [root.key]: root.value
-      };
+      return json;
     }
   },
   methods: {
@@ -81,7 +67,7 @@ export default {
     },
     append(data) {
       const newChild = {
-        key: Date.now(),
+        key: data.type === "array" ? data.children.length : Date.now(),
         value: "value",
         type: "string",
         children: []
@@ -101,15 +87,14 @@ export default {
       children.splice(index, 1);
     },
     renderContent(h, { node, data, store }) {
+      const parentType = node.parent.data.type;
       return (
         <el-row class="flex" gutter={8}>
           <el-col span={5}>
             <el-input
               placeholder="key"
               v-model={data.key}
-              disabled={
-                data.isRoot && (data.type === "object" || data.type === "array")
-              }
+              disabled={parentType === "array"}
             ></el-input>
           </el-col>
           <el-col span={5}>
